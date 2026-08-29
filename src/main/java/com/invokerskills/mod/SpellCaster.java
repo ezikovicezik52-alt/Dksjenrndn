@@ -78,7 +78,7 @@ public class SpellCaster {
     }
 
     private static void iceNova(ServerPlayerEntity player, ServerWorld world) {
-        world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.4f);
+        world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.4f, false);
         world.spawnParticles(ParticleTypes.SNOWFLAKE, player.getX(), player.getY() + 1, player.getZ(), 80, 3, 1.5, 3, 0.02);
         for (LivingEntity e : nearby(world, player, 5)) {
             e.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 2));
@@ -145,7 +145,7 @@ public class SpellCaster {
         BlockHitResult hit = raycast(player, world, 40);
         Vec3d pos = hit.getPos();
         world.spawnParticles(ParticleTypes.FLAME, pos.x, pos.y + 1, pos.z, 100, 1.5, 1.5, 1.5, 0.05);
-        world.playSound(null, BlockPos.ofFloored(pos), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1.5f, 0.8f);
+        world.playSound(null, BlockPos.ofFloored(pos), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1.5f, 0.8f, false);
         Box box = new Box(pos.x - 3, pos.y - 1, pos.z - 3, pos.x + 3, pos.y + 4, pos.z + 3);
         for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, box, le -> true)) {
             e.damage(world, player.getDamageSources().magic(), 8.0f);
