@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "invokerskills",
+  "version": "${version}",
+  "name": "Invoker Skills",
+  "description": "Скилы в стиле Инвокера: Z, X, Y — три орба, комбинация из трёх нажатий автоматически кастует одно из 10 заклинаний.",
+  "authors": ["you"],
+  "contact": {},
+  "license": "CC0-1.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.invokerskills.mod.InvokerSkillsMod"],
+    "client": ["com.invokerskills.mod.InvokerSkillsClient"]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
