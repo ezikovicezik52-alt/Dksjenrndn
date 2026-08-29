@@ -83,7 +83,7 @@ public class SpellCaster {
         for (LivingEntity e : nearby(world, player, 5)) {
             e.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 2));
             e.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 100, 1));
-            e.damage(player.getDamageSources().magic(), 3.0f);
+            e.damage(world, player.getDamageSources().magic(), 3.0f);
         }
     }
 
@@ -113,7 +113,7 @@ public class SpellCaster {
             for (var effect : List.copyOf(e.getStatusEffects())) {
                 e.removeStatusEffect(effect.getEffectType());
             }
-            e.damage(player.getDamageSources().magic(), 2.0f);
+            e.damage(world, player.getDamageSources().magic(), 2.0f);
         }
         world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, player.getX(), player.getY() + 1, player.getZ(), 60, 3, 1, 3, 0.1);
     }
@@ -148,7 +148,7 @@ public class SpellCaster {
         world.playSound(null, BlockPos.ofFloored(pos), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1.5f, 0.8f);
         Box box = new Box(pos.x - 3, pos.y - 1, pos.z - 3, pos.x + 3, pos.y + 4, pos.z + 3);
         for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, box, le -> true)) {
-            e.damage(player.getDamageSources().magic(), 8.0f);
+            e.damage(world, player.getDamageSources().magic(), 8.0f);
             e.setOnFireFor(4);
         }
     }
