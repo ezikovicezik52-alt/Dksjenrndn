@@ -8,13 +8,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -23,21 +21,6 @@ import net.minecraft.world.RaycastContext;
 
 import java.util.List;
 
-/**
- * Здесь живут все 10 заклинаний. Индекс combo соответствует таблице
- * в InvokerSkillsClient (порядок нажатий не важен, считаем количество орбов):
- *
- *  0 = ZZZ  Ледяная волна
- *  1 = ZZX  Морозный шаг (невидимость + скорость)
- *  2 = ZZY  Ледяная стена
- *  3 = ZXX  ЭМИ (снимает баффы с врагов)
- *  4 = ZXY  Торнадо
- *  5 = ZYY  Ускорение (баф на себя)
- *  6 = XXX  Дух кузни (призыв союзника)
- *  7 = XXY  Метеор
- *  8 = XYY  Удар молнии
- *  9 = YYY  Оглушающий взрыв
- */
 public class SpellCaster {
 
     private static final String[] NAMES = {
@@ -78,7 +61,6 @@ public class SpellCaster {
     }
 
     private static void iceNova(ServerPlayerEntity player, ServerWorld world) {
-        world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 1.0f, 1.4f, false);
         world.spawnParticles(ParticleTypes.SNOWFLAKE, player.getX(), player.getY() + 1, player.getZ(), 80, 3, 1.5, 3, 0.02);
         for (LivingEntity e : nearby(world, player, 5)) {
             e.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 2));
@@ -102,7 +84,7 @@ public class SpellCaster {
                 BlockPos pos = base.offset(side, w).up(h);
                 if (world.getBlockState(pos).isAir()) {
                     world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState());
-                    TickScheduler.scheduleRevert(world, pos, 160); // ~8 секунд
+                    TickScheduler.scheduleRevert(world, pos, 160);
                 }
             }
         }
@@ -145,7 +127,6 @@ public class SpellCaster {
         BlockHitResult hit = raycast(player, world, 40);
         Vec3d pos = hit.getPos();
         world.spawnParticles(ParticleTypes.FLAME, pos.x, pos.y + 1, pos.z, 100, 1.5, 1.5, 1.5, 0.05);
-        world.playSound(null, BlockPos.ofFloored(pos), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1.5f, 0.8f, false);
         Box box = new Box(pos.x - 3, pos.y - 1, pos.z - 3, pos.x + 3, pos.y + 4, pos.z + 3);
         for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, box, le -> true)) {
             e.damage(world, player.getDamageSources().magic(), 8.0f);
